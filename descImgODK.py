@@ -96,24 +96,16 @@ for arcTxt in archivosTxt:
 	for linea in lineas: # Leer cada linea del archivo con las urls 
 		######### Descargar la imagen #########
 		print ('--------------------------------------------')
-		#print '\n	Descargando la foto ', countNumber, ' de ', num_lines
-		#print '\n	Trabajando con el archivo ', arcTxt
+		print '\n	Descargando la foto ', countNumber, ' de ', num_lines
+		print '\n	Trabajando con el archivo ', arcTxt
 		
-		# Extraer los caracteres de la tercer columna que corresponden al ID, se aislan de acuerdo a las tabulaciones
-		espacio1 = linea.find('\t')
-		linea1 = linea[espacio1+1:] # Para quitar el primer Tab se suma el numero 1
-		espacio2 = linea1.find('\t')
-		linea2 = linea1[espacio2:]
-		
-		uuid = linea2.find('uuid')
-		print 'Codigo: ', uuid
+		espacio = [' ']
+		uuid = linea.find('uuid')
 		
 		# Obtener el ID de usuario
-		if uuid == 1:
-			idUsuario = linea2.strip()
-			idUsuario = idUsuario[5:43]
-		else:
-			idUsuario = linea2.strip()
+		idUsuario = linea[uuid:]
+		idUsuario = idUsuario.strip()
+		idUsuario = idUsuario[7:43]
 		# print '\n	Usuario: ', idUsuario
 		
 		# si es la primera fila se escriben los encabezados 
@@ -121,6 +113,8 @@ for arcTxt in archivosTxt:
 			worksheet.write('A1', 'instanceID')
 			worksheet.write('B1', 'Link')
 			worksheet.write('C1', 'Imagen')
+			worksheet.write('C1', 'nombreImagen')
+
 		
 		# sumar el numero de celda
 		nCelda = nCelda + 1
@@ -153,7 +147,8 @@ for arcTxt in archivosTxt:
 			# print '\n	Estado: ', estado
 		
 			# construir el nombre del archivo
-			nameIm = carpeta + '\\' + estado + '_' + idUsuario + '_' + idFila +  '.jpg'
+			nameIm = carpeta + '\\' + estado + '_' + idUsuario + '_' + idFila +  '.png'
+			nameImagen = estado + '_' + idUsuario + '_' + idFila +  '.png' # Para almacenar el nombre de la imagen en el archivo Excel
 			print '\n 	Nombre imagen: ' + nameIm
 			
 			# Construir url
@@ -162,7 +157,7 @@ for arcTxt in archivosTxt:
 			
 			#Descargar la imagen
 			try:
-				url_img = requests.get(url, auth = HTTPDigestAuth('admin', 'CIMMYTodk'), timeout = 5) 
+				url_img = requests.get(url, auth = HTTPDigestAuth('l.vargas', 'ODK'), timeout = 5) 
 				f = open(nameIm, 'wb') 
 				f.write(url_img.content) 
 				f.close()
@@ -178,6 +173,10 @@ for arcTxt in archivosTxt:
 				link = nameIm	
 				celdaUrl = 'C' + str(nCelda)
 				worksheet.write_url(celdaUrl, link, url_format, 'Ver imagen')
+				
+				# Escribir el nombre de la imagen
+				celdaNamIm = 'D' + str(nCelda)
+				worksheet.write(celdaNamIm, nameImagen)
 			
 			except:
 				celdaUrl = 'C' + str(nCelda)
@@ -217,6 +216,8 @@ for arcTxt in archivosTxt:
 		print('\n Se ha finalizado el proceso')
 		break
 print '\n^^^^^^^^ Se han leido todos los archivos ^^^^^^^^'
+
+# py -2 descImgODK.py
 #############
 #############
 #############
