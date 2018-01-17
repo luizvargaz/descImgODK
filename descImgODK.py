@@ -18,6 +18,10 @@ from time import sleep
 #############
 #############
 
+# Usuario y pwd
+usuario = 'USUARIO'
+pwd = 'CONTRASENA'
+
 # Obtener la lista de archivos en el directorio
 cwd = os.getcwd() 
 listaArchivos = os.listdir(cwd)
@@ -113,7 +117,7 @@ for arcTxt in archivosTxt:
 			worksheet.write('A1', 'instanceID')
 			worksheet.write('B1', 'Link')
 			worksheet.write('C1', 'Imagen')
-			worksheet.write('C1', 'nombreImagen')
+			worksheet.write('D1', 'nombreImagen')
 
 		
 		# sumar el numero de celda
@@ -157,7 +161,7 @@ for arcTxt in archivosTxt:
 			
 			#Descargar la imagen
 			try:
-				url_img = requests.get(url, auth = HTTPDigestAuth('l.vargas', 'ODK'), timeout = 5) 
+				url_img = requests.get(url, auth = HTTPDigestAuth(usuario, pwd), timeout = 5) 
 				f = open(nameIm, 'wb') 
 				f.write(url_img.content) 
 				f.close()
