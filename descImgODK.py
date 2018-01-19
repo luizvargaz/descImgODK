@@ -19,8 +19,8 @@ from time import sleep
 #############
 
 # Usuario y pwd
-usuario = 'USUARIO'
-pwd = 'CONTRASENA'
+usuario = 'l.vargas'
+pwd = 'ODK'
 
 # Obtener la lista de archivos en el directorio
 cwd = os.getcwd() 
@@ -52,19 +52,20 @@ while True:
         #we're ready to exit the loop.
 		break
 		
-# Obtener el dato de fila
-while True:
-	idFila = raw_input('\nEscribe un ID para la fila: ')
-	if len(idFila) < 1:
-		print("El nombre no puede estar vacio, ententa nuevamente")
-		continue
-	else:
-		#we're happy with the value given.
-        #we're ready to exit the loop.
-		break
-
 
 for arcTxt in archivosTxt:
+
+	# Obtener el dato de fila
+	while True:
+		idFila = raw_input('\nEscribe un ID para la fila: ')
+		if len(idFila) < 1:
+			print("El nombre no puede estar vacio, ententa nuevamente")
+			continue
+		else:
+			#we're happy with the value given.
+			#we're ready to exit the loop.
+			break
+
 	num_lines = sum(1 for line in open(arcTxt))
 	print '\nEl archivo ', arcTxt, ' tiene ', num_lines, ' lineas'
 	
